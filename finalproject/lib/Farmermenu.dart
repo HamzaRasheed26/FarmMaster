@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
-
+import 'cropManagement.dart';
 void main() {
   runApp(MenuPage());
 }
@@ -81,8 +81,11 @@ class FarmerMenu extends StatelessWidget {
               leading: Icon(Icons.spa),
               title: Text('Crop Management'),
               onTap: () {
-                // Handle Crop Management
-                Navigator.pop(context); // Close drawer after selection
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CropManagementScreen()),
+                );
+               // Close drawer after selection
               },
             ),
             ListTile(
