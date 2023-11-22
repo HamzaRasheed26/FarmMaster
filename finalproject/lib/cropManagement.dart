@@ -7,8 +7,8 @@ class Crop {
   String? id;
   String? cropType;
   DateTime? plantDate;
-  DateTime? harvestDate;
-  String? fertilizerUsed;
+  double? Quantity;
+  double? price;
   String? weatherCondition;
   String? soilType;
 
@@ -16,8 +16,8 @@ class Crop {
     this.id,
     this.cropType,
     this.plantDate,
-    this.harvestDate,
-    this.fertilizerUsed,
+    this.Quantity,
+    this.price,
     this.weatherCondition,
     this.soilType,
   });
@@ -27,8 +27,8 @@ class Crop {
       id: map['id'] as String?,
       cropType: map['cropType'] as String?,
       plantDate: map['plantDate'] != null ? DateTime.parse(map['plantDate'] as String) : null,
-      harvestDate: map['harvestDate'] != null ? DateTime.parse(map['harvestDate'] as String) : null,
-      fertilizerUsed: map['fertilizerUsed'] as String?,
+      Quantity: map['Quantity'] as double?,
+      price: map['price'] as double?,
       weatherCondition: map['weatherCondition'] as String?,
       soilType: map['SoilType'] as String?,
     );
@@ -44,28 +44,29 @@ class _CropManagementScreenState extends State<CropManagementScreen> {
   int selectedCropIndex = -1;
   List<Crop> crops = [];
   String _selectedCropType = 'Wheat';
-  String _selectedFertilizer = 'Manure';
   String _selectedWeather = 'sunny';
   String _selectedSoilType = 'Sand';
   final TextEditingController _plantDateController = TextEditingController();
-  final TextEditingController _harvestDateController = TextEditingController();
+  final TextEditingController _quantityController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
   bool _isNotValid = false;
 
   @override
   void dispose() {
     _plantDateController.dispose();
-    _harvestDateController.dispose();
+    _quantityController.dispose();
+    _priceController.dispose();
     super.dispose();
   }
 
   void AddCrop() async {
     if (_plantDateController.text.isNotEmpty &&
-        _harvestDateController.text.isNotEmpty) {
+        _quantityController.text.isNotEmpty && _priceController.text.isNotEmpty) {
       var reqBody = {
         "cropType": _selectedCropType,
         "plantDate": _plantDateController.text,
-        "harvestDate": _harvestDateController.text,
-        "fertilizerUsed": _selectedFertilizer,
+        "Quantity": _quantityController.text,
+        "price": _priceController.text,
         "weatherCondition": _selectedWeather,
         "SoilType": _selectedSoilType,
       };
@@ -189,8 +190,8 @@ class _CropManagementScreenState extends State<CropManagementScreen> {
       var updatedCropData = {
         "cropType": _selectedCropType,
         "plantDate": _plantDateController.text,
-        "harvestDate": _harvestDateController.text,
-        "fertilizerUsed": _selectedFertilizer,
+        "Quantity": _quantityController.text,
+        "price": _priceController.text,
         "weatherCondition": _selectedWeather,
         "SoilType": _selectedSoilType,
         // Add other fields as needed
@@ -223,12 +224,12 @@ class _CropManagementScreenState extends State<CropManagementScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Crop Management'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
+        appBar: AppBar(
+          title: Text('Crop Management'),
+        ),
+        body: SingleChildScrollView(
+            child: Column(
+                children: [
             // Input fields
             DropdownButtonFormField<String>(
               value: _selectedCropType,
@@ -237,7 +238,7 @@ class _CropManagementScreenState extends State<CropManagementScreen> {
                 'Soy',
                 'Barley',
                 'Rice',
-                'Type 5',
+                'Oat',
               ].map((type) {
                 return DropdownMenuItem<String>(
                   value: type,
@@ -252,17 +253,15 @@ class _CropManagementScreenState extends State<CropManagementScreen> {
               decoration: InputDecoration(labelText: 'Crop Type'),
             ),
 
-            DropdownButtonFormField<String>(
-              value:_selectedFertilizer,
-              items: ['Manure', 'Nitrogen', 'Potassium', 'Peat', 'Potash']
-                  .map((type) => DropdownMenuItem<String>(child: Text(type), value: type))
-                  .toList(),
-              onChanged: (value) {
-                setState(() {
-                 _selectedFertilizer= value!;
-                });
-              },
-              decoration: InputDecoration(labelText: 'Fertilizer Used'),
+            TextFormField(
+              controller: _quantityController,
+              decoration: InputDecoration(labelText: 'Quantity'),
+              keyboardType: TextInputType.number,
+            ),
+            TextFormField(
+                controller: _priceController,
+                decoration: InputDecoration(labelText: 'Price'),
+                keyboardType: TextInputType.number,
             ),
             DropdownButtonFormField<String>(
               value:_selectedWeather,
@@ -306,71 +305,53 @@ class _CropManagementScreenState extends State<CropManagementScreen> {
               },
               decoration: InputDecoration(labelText: 'Planting Date'),
             ),
-            TextFormField(
-              controller: _harvestDateController,
-              readOnly: true,
-              onTap: () async {
-                final selectedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2050),
-                );
-                if (selectedDate != null) {
-                  setState(() {
-                    _harvestDateController.text = selectedDate.toString();
-
-                  });
-                }
-              },
-              decoration: InputDecoration(labelText: 'Harvest Date'),
-            ),
             // Other dropdowns for Fertilizer, Weather Condition, Soil Type...
 
             ElevatedButton(
               onPressed: () {
                 setState(() {
                  AddCrop();
+                 fetchCrops();
                 });
               },
               child: Text('Add Data'),
             ),
             // Table to display crop data
-            SizedBox(
-              height: 400, // Adjust the height as needed
-              child: ListView.builder(
-                itemCount: crops.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    margin: EdgeInsets.all(8.0),
-                    child: Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Crop Type: ${crops[index].cropType ?? ''}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0,
-                            ),
-                           ),
-            SizedBox(height: 8.0),
-            Text(
-              'Plant Date: ${crops[index].plantDate?.toString() ?? ''}',
-            ),
-            Text(
-              'Harvest Date: ${crops[index].harvestDate?.toString() ?? ''}',
-            ),
-            Text(
-              'Fertilizer Used : ${crops[index].fertilizerUsed?.toString() ?? ''}',
-            ),
-            Text(
-              'weather: ${crops[index].weatherCondition?.toString() ?? ''}',
-            ),
-            Text(
-              'Soil Type: ${crops[index].soilType?.toString() ?? ''}',
-            ),
+                  SizedBox(
+                    height: 400, // Adjust the height as needed
+                    child: ListView.builder(
+                      itemCount: crops.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          margin: EdgeInsets.all(8.0),
+                          child: Padding(
+                            padding: EdgeInsets.all(12.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Crop Type: ${crops[index].cropType ?? ''}',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0,
+                                  ),
+                                ),
+                                SizedBox(height: 8.0),
+                                Text(
+                                  'Plant Date: ${crops[index].plantDate?.toString() ?? ''}',
+                                ),
+                                Text(
+                                  'Quantity: ${crops[index].Quantity?.toString() ?? ''}',
+                                ),
+                                Text(
+                                  'Price: ${crops[index].price?.toString() ?? ''}',
+                                ),
+                                Text(
+                                  'Weather: ${crops[index].weatherCondition?.toString() ?? ''}',
+                                ),
+                                Text(
+                                  'Soil Type: ${crops[index].soilType?.toString() ?? ''}',
+                                ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -380,8 +361,8 @@ class _CropManagementScreenState extends State<CropManagementScreen> {
                       selectedCropIndex = index; // Set the selected index
             // Assign the selected crop details to the input fields for editing
                        _selectedCropType = crops[index].cropType ?? '';
-                       _selectedFertilizer = crops[index].fertilizerUsed ?? '';
-                       _harvestDateController.text=crops[index].harvestDate?.toString() ?? '';
+                       _priceController.text = crops[index].price.toString() ?? '';
+                       _quantityController.text=crops[index].Quantity?.toString() ?? '';
                        _plantDateController.text=crops[index].plantDate?.toString() ?? '';
                        _selectedWeather=crops[index].weatherCondition?.toString() ?? '';
                        _selectedSoilType=crops[index].soilType?.toString() ?? '';
@@ -391,7 +372,6 @@ class _CropManagementScreenState extends State<CropManagementScreen> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    print(crops[index].id.toString());
                     deleteCrop(crops[index].id.toString());
                   },
                   child: Text('Delete'),

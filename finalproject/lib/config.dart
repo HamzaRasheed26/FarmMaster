@@ -4,3 +4,7 @@ final login = url+'login';
 final addcrop=url+'crop/create';
 final viewcrop= url+'api/crops';
 final deletecrop=url;
+final addsellCrop= url+'sellcrop/create';
+final getsellcrop=url+'sellcrop/get/';
+final getAllsellcrops=url+'sellcrops';
+final delsellcrops=url+'sellcrop/del/';

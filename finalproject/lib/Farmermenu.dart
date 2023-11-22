@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'main.dart';
 import 'cropManagement.dart';
 import 'welcome.dart';
+import 'SellAtMarket.dart';
 void main() {
   runApp(MenuPage());
 }
@@ -121,8 +122,10 @@ class FarmerMenu extends StatelessWidget {
               leading: Icon(Icons.shopping_cart),
               title: Text('Sell Crops at Marketplace'),
               onTap: () {
-                // Handle Sell Crops at Marketplace
-                Navigator.pop(context); // Close drawer after selection
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SellCropScreen()),
+                );
               },
             ),
           ],
