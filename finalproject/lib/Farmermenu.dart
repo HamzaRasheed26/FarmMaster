@@ -1,6 +1,8 @@
+import 'package:finalproject/welcome.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'cropManagement.dart';
+import 'welcome.dart';
 void main() {
   runApp(MenuPage());
 }
@@ -101,7 +103,10 @@ class FarmerMenu extends StatelessWidget {
               title: Text('Weather & Forecasting'),
               onTap: () {
                 // Handle Weather & Forecasting
-                Navigator.pop(context); // Close drawer after selection
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Welcome()),
+                );
               },
             ),
             ListTile(

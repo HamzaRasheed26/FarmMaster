@@ -31,12 +31,15 @@ dependencies:
   flutter:
     sdk: flutter
   velocity_x: ^3.0.0
-  http:
 
+  cupertino_icons: ^1.0.2
+
+  http: ^0.13.4
+  intl: ^0.17.0
+  modal_bottom_sheet: ^2.0.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
@@ -61,9 +64,29 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/alarm.png
+    - assets/checked.png
+    - assets/clear.png
+    - assets/get-started.png
+    - assets/hail.png
+    - assets/heavycloud.png
+    - assets/heavyrain.png
+    - assets/humidity.png
+    - assets/lightcloud.png
+    - assets/lightrain.png
+    - assets/max-temp.png
+    - assets/menu-bar.png
+    - assets/pin.png
+    - assets/profile.png
+    - assets/showers.png
+    - assets/sleet.png
+    - assets/snow.png
+    - assets/thunderstorm.png
+    - assets/unchecked.png
+    - assets/windspeed.png
+    - assets/menu.png
+    - assets/cloud.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

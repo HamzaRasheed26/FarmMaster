@@ -4,6 +4,7 @@ import 'config.dart';
 import 'dart:convert';
 
 class Crop {
+  String? id;
   String? cropType;
   DateTime? plantDate;
   DateTime? harvestDate;
@@ -12,6 +13,7 @@ class Crop {
   String? soilType;
 
   Crop({
+    this.id,
     this.cropType,
     this.plantDate,
     this.harvestDate,
@@ -22,6 +24,7 @@ class Crop {
 
   factory Crop.fromMap(Map<String, dynamic> map) {
     return Crop(
+      id: map['id'] as String?,
       cropType: map['cropType'] as String?,
       plantDate: map['plantDate'] != null ? DateTime.parse(map['plantDate'] as String) : null,
       harvestDate: map['harvestDate'] != null ? DateTime.parse(map['harvestDate'] as String) : null,
@@ -38,22 +41,26 @@ class CropManagementScreen extends StatefulWidget {
 }
 
 class _CropManagementScreenState extends State<CropManagementScreen> {
-  List<Crop> crops=[];
+  int selectedCropIndex = -1;
+  List<Crop> crops = [];
   String _selectedCropType = 'Wheat';
   String _selectedFertilizer = 'Manure';
   String _selectedWeather = 'sunny';
   String _selectedSoilType = 'Sand';
   final TextEditingController _plantDateController = TextEditingController();
   final TextEditingController _harvestDateController = TextEditingController();
-  bool _isNotValid=false;
+  bool _isNotValid = false;
+
   @override
   void dispose() {
     _plantDateController.dispose();
     _harvestDateController.dispose();
     super.dispose();
   }
+
   void AddCrop() async {
-    if (_plantDateController.text.isNotEmpty && _harvestDateController.text.isNotEmpty) {
+    if (_plantDateController.text.isNotEmpty &&
+        _harvestDateController.text.isNotEmpty) {
       var reqBody = {
         "cropType": _selectedCropType,
         "plantDate": _plantDateController.text,
@@ -71,13 +78,13 @@ class _CropManagementScreenState extends State<CropManagementScreen> {
 
       var jsonResponse = jsonDecode(response.body);
       print(jsonResponse['status']);
-      if (jsonResponse['status']==true) {
+      if (jsonResponse['status'] == true) {
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Failed'),
-              content: Text('Crop did not added'),
+              title: Text('Success'),
+              content: Text('Crop added successfully'),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
@@ -94,8 +101,8 @@ class _CropManagementScreenState extends State<CropManagementScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Success'),
-              content: Text('Crop added successfully.'),
+              title: Text('Fail'),
+              content: Text('Crop did not added'),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
@@ -114,13 +121,13 @@ class _CropManagementScreenState extends State<CropManagementScreen> {
       });
     }
   }
+
   Future<List<Crop>> getCrops() async {
     var response = await http.get(Uri.parse(viewcrop));
-    print('Response Status Code: ${response.statusCode}');
-    print('Response Body: ${response.body}');
 
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonResponse = json.decode(response.body);
+
       if (jsonResponse.containsKey('crops') && jsonResponse['crops'] is List) {
         List<dynamic> cropList = jsonResponse['crops'];
         List<Crop> crops = cropList.map((data) => Crop.fromMap(data)).toList();
@@ -132,6 +139,7 @@ class _CropManagementScreenState extends State<CropManagementScreen> {
       throw Exception('Failed to load crops');
     }
   }
+
   void initState() {
     super.initState();
     fetchCrops();
@@ -141,11 +149,70 @@ class _CropManagementScreenState extends State<CropManagementScreen> {
     try {
       List<Crop> fetchedCrops = await getCrops();
       setState(() {
+        print(fetchedCrops);
         crops = fetchedCrops;
+
       });
     } catch (e) {
       print('Error fetching crops: $e');
       // Handle error
+    }
+  }
+  Future<void> deleteCrop(String id) async {
+    print(id);
+    if (id != null) {
+     // Adjust the endpoint as per your API
+      try {
+        var response = await http.delete(
+          Uri.parse('$url$id'),
+          headers: {'Content-Type': 'application/json'},
+        );
+        if (response.statusCode == 204) {
+          setState(() {
+            // Remove the crop with the matching ID from the list displayed in UI
+            crops.removeWhere((crop) => crop.id == id);
+          });
+          print('Crop deleted successfully');
+        } else {
+          print('Failed to delete crop');
+        }
+      } catch (error) {
+        print('Error deleting crop: $error');
+      }
+    }
+  }
+
+  Future<void> editCrop(Crop crop) async {
+    if (crop.id != null) {
+     // Adjust the endpoint as per your API
+    print(crop.id);
+      var updatedCropData = {
+        "cropType": _selectedCropType,
+        "plantDate": _plantDateController.text,
+        "harvestDate": _harvestDateController.text,
+        "fertilizerUsed": _selectedFertilizer,
+        "weatherCondition": _selectedWeather,
+        "SoilType": _selectedSoilType,
+        // Add other fields as needed
+      };
+
+      try {
+        var response = await http.put(
+          Uri.parse('$url${crop.id}'),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(updatedCropData),
+        );
+
+        if (response.statusCode == 200) {
+          // If the crop was successfully updated, refresh the crop list
+          await fetchCrops();
+          print('Crop updated successfully');
+        } else {
+          print('Failed to update crop');
+        }
+      } catch (error) {
+        print('Error updating crop: $error');
+      }
     }
   }
 
@@ -165,17 +232,26 @@ class _CropManagementScreenState extends State<CropManagementScreen> {
             // Input fields
             DropdownButtonFormField<String>(
               value: _selectedCropType,
-              items: ['Wheat', 'Soy', 'Barley', 'Rice', 'Type 5']
-                  .map((type) => DropdownMenuItem<String>(child: Text(type), value: type))
-                  .toList(),
+              items: [
+                'Wheat',
+                'Soy',
+                'Barley',
+                'Rice',
+                'Type 5',
+              ].map((type) {
+                return DropdownMenuItem<String>(
+                  value: type,
+                  child: Text(type),
+                );
+              }).toList(),
               onChanged: (value) {
                 setState(() {
-                 _selectedCropType = value!;
-
+                  _selectedCropType = value!;
                 });
               },
               decoration: InputDecoration(labelText: 'Crop Type'),
             ),
+
             DropdownButtonFormField<String>(
               value:_selectedFertilizer,
               items: ['Manure', 'Nitrogen', 'Potassium', 'Peat', 'Potash']
@@ -278,57 +354,69 @@ class _CropManagementScreenState extends State<CropManagementScreen> {
                               fontWeight: FontWeight.bold,
                               fontSize: 18.0,
                             ),
-                          ),
-    SizedBox(height: 8.0),
-    Text(
-    'Plant Date: ${crops[index].plantDate?.toString() ?? ''}',
-    ),
-    Text(
-    'Harvest Date: ${crops[index].harvestDate?.toString() ?? ''}',
-    ),
-      Text(
-        'Fertilizer Used : ${crops[index].fertilizerUsed?.toString() ?? ''}',
-      ),
-      Text(
-        'weather: ${crops[index].weatherCondition?.toString() ?? ''}',
-      ),
-      Text(
-        'Soil Type: ${crops[index].soilType?.toString() ?? ''}',
-      ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                   // Trigger edit function
-                                },
-                                child: Text('Edit'),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  // Trigger delete function
-                                },
-                                child: Text('Delete'),
-                              ),
-                            ],
-                          ),
-    // Add more details as needed
-    ],
-    ),
-    ),
-    );
-    },
-    ),
-    ),
-            ElevatedButton(
-              onPressed: () {
-                // Implement save edited data functionality
-              },
-              child: Text('Save Edited Data'),
+                           ),
+            SizedBox(height: 8.0),
+            Text(
+              'Plant Date: ${crops[index].plantDate?.toString() ?? ''}',
             ),
-          ],
+            Text(
+              'Harvest Date: ${crops[index].harvestDate?.toString() ?? ''}',
+            ),
+            Text(
+              'Fertilizer Used : ${crops[index].fertilizerUsed?.toString() ?? ''}',
+            ),
+            Text(
+              'weather: ${crops[index].weatherCondition?.toString() ?? ''}',
+            ),
+            Text(
+              'Soil Type: ${crops[index].soilType?.toString() ?? ''}',
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedCropIndex = index; // Set the selected index
+            // Assign the selected crop details to the input fields for editing
+                       _selectedCropType = crops[index].cropType ?? '';
+                       _selectedFertilizer = crops[index].fertilizerUsed ?? '';
+                       _harvestDateController.text=crops[index].harvestDate?.toString() ?? '';
+                       _plantDateController.text=crops[index].plantDate?.toString() ?? '';
+                       _selectedWeather=crops[index].weatherCondition?.toString() ?? '';
+                       _selectedSoilType=crops[index].soilType?.toString() ?? '';
+                    });
+                    },
+                  child: Text('Edit'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    print(crops[index].id.toString());
+                    deleteCrop(crops[index].id.toString());
+                  },
+                  child: Text('Delete'),
+                ),
+              ],
+            ),
+                        ],
+                      ),
+                    ),
+                  );
+                  },
+              ),
+            ),
+        ElevatedButton(
+          onPressed: () async {
+            if (selectedCropIndex != -1) {
+              Crop selectedCrop = crops[selectedCropIndex];
+              await editCrop(selectedCrop);
+              setState(() {
+                selectedCropIndex = -1; // Reset the selected index after editing
+              });
+            }
+          },
+          child: Text('Save Edited Data'),
         ),
-      ),
-    );
+        ])));
   }
 }
