@@ -4,6 +4,7 @@ import 'main.dart';
 import 'cropManagement.dart';
 import 'welcome.dart';
 import 'SellAtMarket.dart';
+import 'EmailSending.dart';
 void main() {
   runApp(MenuPage());
 }
@@ -114,8 +115,10 @@ class FarmerMenu extends StatelessWidget {
               leading: Icon(Icons.chat),
               title: Text('Communication with Advisors'),
               onTap: () {
-                // Handle Communication with Advisors
-                Navigator.pop(context); // Close drawer after selection
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ContactPage()),
+                );
               },
             ),
             ListTile(

@@ -67,6 +67,7 @@ class _SellCropScreenState extends State<SellCropScreen> {
       );
 
       var jsonResponse = jsonDecode(response.body);
+      print(jsonResponse['error']);
       if (jsonResponse['status'] == true) {
         showDialog(
           context: context,
@@ -85,7 +86,28 @@ class _SellCropScreenState extends State<SellCropScreen> {
             );
           },
         );
-      } else {
+      }
+      else if(jsonResponse['error']== "already exists")
+      {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Fail'),
+                content: Text('Crop Already at Marketplace'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              );
+            }
+            );
+      }
+      else {
         showDialog(
           context: context,
           builder: (BuildContext context) {

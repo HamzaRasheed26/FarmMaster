@@ -5,17 +5,18 @@ import 'admin.dart';
 import 'Farmermenu.dart';
 import 'package:http/http.dart' as http;
 import 'config.dart';
-
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('HappyFarm'),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: LoginForm(),
+      body: Container(
+        color: Colors.green, // Set the background color here
+        child: Center(
+          child: LoginForm(),
+        ),
       ),
     );
   }
@@ -72,46 +73,83 @@ class _LoginFormState extends State<LoginForm> {
   }
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        TextFormField(
-          controller: _emailController,
-          decoration: InputDecoration(
-            labelText: 'Email',
-            border: OutlineInputBorder(),
-            errorText: _isNotValid ? 'Enter proper Info':null,
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center, // Center vertically
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Text(
+            'Login',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
-          keyboardType: TextInputType.emailAddress,
-        ),
-        SizedBox(height: 16.0),
-        TextFormField(
-          controller: _passwordController,
-          decoration: InputDecoration(
-            labelText: 'Password',
-            border: OutlineInputBorder(),
-            errorText: _isNotValid ? 'Enter proper Info':null,
+          SizedBox(height: 32.0),
+          TextFormField(
+            controller: _emailController,
+            decoration: InputDecoration(
+              labelText: 'Email',
+              border: OutlineInputBorder(),
+              filled: true,
+              fillColor: Colors.white,
+              errorText: _isNotValid ? 'Enter proper Info' : null,
+
+            ),
+            keyboardType: TextInputType.emailAddress,
           ),
-          obscureText: true,
-        ),
-        SizedBox(height: 24.0),
-        ElevatedButton(
-          onPressed: () {
-            loginUser();
-          },
-          child: Text('Login'),
-        ),
-        SizedBox(height: 16.0),
-        TextButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SignupPage()),
-            );
-          },
-          child: Text('Not registered? Sign up'),
-        ),
-      ],
+          SizedBox(height: 16.0),
+          TextFormField(
+            controller: _passwordController,
+            decoration: InputDecoration(
+              labelText: 'Password',
+              border: OutlineInputBorder(),
+              filled: true,
+              fillColor: Colors.white,
+              errorText: _isNotValid ? 'Enter proper Info' : null,
+            ),
+            obscureText: true,
+          ),
+          SizedBox(height: 24.0),
+          ElevatedButton(
+            onPressed: () {
+              loginUser();
+            },
+            child: Text('Login'),
+          ),
+          SizedBox(height: 16.0),
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SignUpForm()),
+              );
+            },
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'Not registered? ',
+                    style: TextStyle(
+                      color: Colors.black, // Color for "Not registered?"
+                    ),
+                  ),
+                  TextSpan(
+                    text: 'SignUp',
+                    style: TextStyle(
+                      color: Colors.white, // Color for "SignUp"
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
