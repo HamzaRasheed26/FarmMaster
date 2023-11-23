@@ -39,6 +39,7 @@ class HomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox( height: 20),
               Text(
                 'Take Care of Your Farm Here',
                 style: TextStyle(
@@ -46,6 +47,12 @@ class HomePage extends StatelessWidget {
                   fontSize: 24.0,
                   fontWeight: FontWeight.bold,
                 ),
+              ),
+              Image.asset(
+                'assets/Farm2.png', // Path to your image
+                width: 2000, // Adjust width as needed
+                height: 500, // Adjust height as needed
+                fit: BoxFit.cover,
               ),
             ],
           ),

@@ -30,9 +30,11 @@ class FarmerMenu extends StatelessWidget {
         title: Text('Farmer Menu'),
       ),
       body: Center(
-        child: Text(
-          'Tap the menu icon at the bottom to open the drawer.',
-          textAlign: TextAlign.center,
+        child: Image.asset(
+          'assets/Farm2.png', // Path to your image
+          width: 2000, // Adjust width as needed
+          height: 700, // Adjust height as needed
+          fit: BoxFit.cover,
         ),
       ),
       bottomNavigationBar: BottomAppBar(

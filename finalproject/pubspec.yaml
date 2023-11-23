@@ -86,6 +86,7 @@ flutter:
     - assets/unchecked.png
     - assets/windspeed.png
     - assets/menu.png
+    - assets/Farm2.png
     - assets/cloud.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
