@@ -13,30 +13,11 @@ class _ContactPageState extends State<ContactPage> {
   final TextEditingController _subjectController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _messageController = TextEditingController();
+  bool _isNotVAlid=false;
   Future SendEmail() async
   {
-    // const serviceId="service_t4wlhgg";
-    // const templateId="template_zhicz5d";
-    // const userId="T4wrAk-G98PSGhP0f";
-    // final response = await http.post(Uri.parse(email),
-    //     headers: {'origin':'http://localhost',
-    //   'Content-Type': 'application/json'},
-    //     body: jsonEncode({
-    //       "service_id": serviceId,
-    //       "template_id":templateId,
-    //       "user_id":userId,
-    //       "template_params":{
-    //         "name":_nameController.text,
-    //         "subject":_subjectController.text,
-    //         "message":_messageController.text,
-    //         "to_email":_emailController.text,
-    //         "user_email":"mahnoorfatima3324@gmail.com",
-    //       }
-    //     })
-    // );
-    //  print(response.statusCode);
     String mail=_emailController.text;
-    String subject=_emailController.text;
+    String subject=_subjectController.text;
     String msg=_messageController.text;
     final Uri email=Uri(scheme: 'mailto',
     path: mail,
@@ -46,6 +27,54 @@ class _ContactPageState extends State<ContactPage> {
         await launchUrl((email));
       }else{
       debugPrint('error');
+    }
+  }
+
+  void AddEmail() async {
+    if (_emailController.text.isNotEmpty &&
+        _messageController.text.isNotEmpty &&
+        _subjectController.text.isNotEmpty &&
+        _nameController.text.isNotEmpty) {
+      var regBody = {
+        "Name": _nameController.text,
+        "Subject": _subjectController.text,
+        "email": _emailController.text,
+        "msg": _messageController.text,
+      };
+      var response = await http.post(
+        Uri.parse(addemail),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(regBody),
+      );
+      var jsonResponse = jsonDecode(response.body);
+      if (jsonResponse['status']) {
+        print("email sent");
+      }
+
+      else
+      {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Alert'),
+                content: Text("Something went wrong"),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              );
+            }
+        );
+      }
+    } else {
+      setState(() {
+        _isNotVAlid = true;
+      });
     }
   }
   @override
@@ -71,28 +100,29 @@ class _ContactPageState extends State<ContactPage> {
           children: [
             TextFormField(
               controller: _nameController,
-              decoration: InputDecoration(labelText: 'Name'),
+              decoration: InputDecoration(labelText: 'Name', errorText: _isNotVAlid ? 'Enter proper Info':null),
             ),
             SizedBox(height: 16.0),
             TextFormField(
               controller: _subjectController,
-              decoration: InputDecoration(labelText: 'Subject'),
+              decoration: InputDecoration(labelText: 'Subject',errorText: _isNotVAlid ? 'Enter proper Info':null),
             ),
             SizedBox(height: 16.0),
             TextFormField(
               controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: InputDecoration(labelText: 'Email',errorText: _isNotVAlid ? 'Enter proper Info':null),
               keyboardType: TextInputType.emailAddress,
             ),
             SizedBox(height: 16.0),
             TextFormField(
               controller: _messageController,
-              decoration: InputDecoration(labelText: 'Message'),
+              decoration: InputDecoration(labelText: 'Message',errorText: _isNotVAlid ? 'Enter proper Info':null),
               maxLines: 4,
             ),
             SizedBox(height: 24.0),
             ElevatedButton(
               onPressed: () {
+                AddEmail();
                 SendEmail();
               },
               child: Text('Send'),

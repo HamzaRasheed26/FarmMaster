@@ -1,4 +1,4 @@
-final url ='http://10.5.98.186:3700/';
+final url ='http://10.5.98.43:3700/';
 final registration = url+'registration';
 final login = url+'login';
 final addcrop=url+'crop/create';
@@ -9,3 +9,4 @@ final getsellcrop=url+'sellcrop/get/';
 final getAllsellcrops=url+'sellcrops';
 final delsellcrops=url+'sellcrop/del/';
 final email="https://api.emailjs.com/api/v1.0/email/send";
+final addemail = url+'email';

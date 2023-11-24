@@ -29,13 +29,27 @@ class FarmerMenu extends StatelessWidget {
       appBar: AppBar(
         title: Text('Farmer Menu'),
       ),
-      body: Center(
-        child: Image.asset(
-          'assets/Farm2.png', // Path to your image
-          width: 2000, // Adjust width as needed
-          height: 700, // Adjust height as needed
-          fit: BoxFit.cover,
-        ),
+      body:  Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            'assets/Farm2.png', // Path to your image
+            width: 2000, // Adjust width as needed
+            height: 700, // Adjust height as needed
+            fit: BoxFit.cover,
+          ),
+          Center(
+            child: Text(
+              'Take Care of Your Farm Here',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 35.0,
+                fontWeight: FontWeight.bold,
+
+              ),
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.green,
