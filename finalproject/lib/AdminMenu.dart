@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'main.dart';
 import 'cropManagement.dart';
 import 'UserManagemnt.dart';
+import 'ViewSell.dart';
 import 'EmailSending.dart';
 void main() {
   runApp(AdminMenuPage());
@@ -135,7 +136,7 @@ class AdminMenu extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ContactPage()),
+                  MaterialPageRoute(builder: (context) => SellCropViewPage()),
                 );
               },
             ),

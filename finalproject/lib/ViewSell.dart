@@ -45,6 +45,7 @@ class _SellCropViewPageState extends State<SellCropViewPage> {
 
   Future<List<ViewSellCrop>> getSellCrops() async {
     try {
+      print(sellCrops);
       var response = await http.get(Uri.parse(getAllsellcrops));
 
       if (response.statusCode == 200) {
@@ -69,6 +70,7 @@ class _SellCropViewPageState extends State<SellCropViewPage> {
   void initState() {
     super.initState();
     fetchCrops();
+    print(sellCrops);
   }
 
   Future<void> fetchCrops() async {

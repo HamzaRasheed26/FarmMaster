@@ -48,7 +48,6 @@ class _SellCropScreenState extends State<SellCropScreen> {
 
   void AddCrop(String id) async {
     await fetchSellCrops(id); // Wait for fetchSellCrops to complete before continuing
-    print(cropsForSale);
 
     if (cropsForSale.isNotEmpty) {
       var reqBody = {
