@@ -233,7 +233,7 @@ class _SignUpFormState extends State<SignUpForm> {
             onPressed: () {
               registerUser();
             },
-            child: Text('Sign Up', style: TextStyle(color: Colors.green)),
+            child: Text('Sign Up', style: TextStyle(color: Colors.white)),
             style: ElevatedButton.styleFrom(
               primary: Colors.green, // Set button color to white
             ),

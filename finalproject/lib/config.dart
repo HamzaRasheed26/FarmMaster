@@ -10,3 +10,6 @@ final getAllsellcrops=url+'sellcrops';
 final delsellcrops=url+'sellcrop/del/';
 final email="https://api.emailjs.com/api/v1.0/email/send";
 final addemail = url+'email';
+final getusers=url+'users';
+final updateusers=url+'update/user/';
+final deleteusers=url+'delete/user/';

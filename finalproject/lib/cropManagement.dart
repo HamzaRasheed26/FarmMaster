@@ -351,40 +351,40 @@ class _CropManagementScreenState extends State<CropManagementScreen> {
                                 ),
                                 Text(
                                   'Soil Type: ${crops[index].soilType?.toString() ?? ''}',
+                                        ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          selectedCropIndex = index; // Set the selected index
+                                // Assign the selected crop details to the input fields for editing
+                                           _selectedCropType = crops[index].cropType ?? '';
+                                           _priceController.text = crops[index].price.toString() ?? '';
+                                           _quantityController.text=crops[index].Quantity?.toString() ?? '';
+                                           _plantDateController.text=crops[index].plantDate?.toString() ?? '';
+                                           _selectedWeather=crops[index].weatherCondition?.toString() ?? '';
+                                           _selectedSoilType=crops[index].soilType?.toString() ?? '';
+                                        });
+                                        },
+                                      child: Text('Edit'),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        deleteCrop(crops[index].id.toString());
+                                      },
+                                      child: Text('Delete'),
+                                    ),
+                                  ],
                                 ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      selectedCropIndex = index; // Set the selected index
-            // Assign the selected crop details to the input fields for editing
-                       _selectedCropType = crops[index].cropType ?? '';
-                       _priceController.text = crops[index].price.toString() ?? '';
-                       _quantityController.text=crops[index].Quantity?.toString() ?? '';
-                       _plantDateController.text=crops[index].plantDate?.toString() ?? '';
-                       _selectedWeather=crops[index].weatherCondition?.toString() ?? '';
-                       _selectedSoilType=crops[index].soilType?.toString() ?? '';
-                    });
-                    },
-                  child: Text('Edit'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    deleteCrop(crops[index].id.toString());
-                  },
-                  child: Text('Delete'),
-                ),
-              ],
-            ),
-                        ],
-                      ),
-                    ),
-                  );
-                  },
-              ),
-            ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                      },
+                                  ),
+                                ),
         ElevatedButton(
           onPressed: () async {
             if (selectedCropIndex != -1) {

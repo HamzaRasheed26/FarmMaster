@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'signup.dart'; // Import the signup page file
-import 'admin.dart';
 import 'Farmermenu.dart';
+import 'AdminMenu.dart';
 import 'package:http/http.dart' as http;
 import 'config.dart';
 class LoginPage extends StatelessWidget {
@@ -50,7 +50,7 @@ class _LoginFormState extends State<LoginForm> {
         if (jsonResponse['role'] == "Admin") {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AdminPage()),
+            MaterialPageRoute(builder: (context) => AdminMenuPage()),
           );
         }
         else if (jsonResponse['role'] == "Farmer") {

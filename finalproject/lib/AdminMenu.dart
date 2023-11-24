@@ -2,24 +2,23 @@ import 'package:finalproject/welcome.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'cropManagement.dart';
-import 'welcome.dart';
-import 'SellAtMarket.dart';
+import 'UserManagemnt.dart';
 import 'EmailSending.dart';
 void main() {
-  runApp(MenuPage());
+  runApp(AdminMenuPage());
 }
 
-class MenuPage extends StatelessWidget {
+class AdminMenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Farmer Menu',
-      home: FarmerMenu(),
+      home: AdminMenu(),
     );
   }
 }
 
-class FarmerMenu extends StatelessWidget {
+class AdminMenu extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -27,15 +26,15 @@ class FarmerMenu extends StatelessWidget {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Farmer Menu'),
+        title: Text('Admin Menu'),
       ),
       body:  Stack(
         fit: StackFit.expand,
         children: [
           Image.asset(
-            'assets/Farm2.png', // Path to your image
-            width: 2000, // Adjust width as needed
-            height: 700, // Adjust height as needed
+            'assets/Farm2.png', // Path to image
+            width: 2000,
+            height: 700,
             fit: BoxFit.cover,
           ),
           Center(
@@ -58,17 +57,19 @@ class FarmerMenu extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             IconButton(
-              icon:Tooltip(
-                message: 'Menu',
-                child:  Icon(Icons.menu, color: Colors.white),),
-              onPressed: () {
-                _scaffoldKey.currentState!.openDrawer();
-              },
+                icon: Tooltip(
+                  message: 'Menu',
+                  child: Icon(Icons.menu, color: Colors.white),
+                ),
+                onPressed: () {
+                  _scaffoldKey.currentState!.openDrawer();
+                },
             ),
             IconButton(
               icon:Tooltip(
                 message: 'LogOut',
-                child:  Icon(Icons.logout, color: Colors.white),),
+                child: Icon(Icons.logout, color: Colors.white),
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -96,29 +97,29 @@ class FarmerMenu extends StatelessWidget {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.spa),
-              title: Text('Crop Management'),
+              leading: Icon(Icons.person),
+              title: Text('User Management'),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CropManagementScreen()),
+                  MaterialPageRoute(builder: (context) => UserManagementScreen()),
                 );
-               // Close drawer after selection
+                // Close drawer after selection
               },
             ),
-            SizedBox(height: 50),
+            SizedBox(height: 50), // Adding space between options
             ListTile(
-              leading: Icon(Icons.inventory),
-              title: Text('Inventory Tracking'),
+              leading: Icon(Icons.content_copy),
+              title: Text('Content Management'),
               onTap: () {
                 // Handle Inventory Tracking
                 Navigator.pop(context); // Close drawer after selection
               },
             ),
-            SizedBox(height: 50),
+            SizedBox(height: 50), // Adding space between options
             ListTile(
-              leading: Icon(Icons.cloud),
-              title: Text('Weather & Forecasting'),
+              leading: Icon(Icons.report),
+              title: Text('Reporting'),
               onTap: () {
                 // Handle Weather & Forecasting
                 Navigator.push(
@@ -129,23 +130,12 @@ class FarmerMenu extends StatelessWidget {
             ),
             SizedBox(height: 50),
             ListTile(
-              leading: Icon(Icons.chat),
-              title: Text('Communication with Advisors'),
+              leading: Icon(Icons.shopping_cart),
+              title: Text('Market oversight'),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ContactPage()),
-                );
-              },
-            ),
-            SizedBox(height: 50),
-            ListTile(
-              leading: Icon(Icons.shopping_cart),
-              title: Text('Sell Crops at Marketplace'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SellCropScreen()),
                 );
               },
             ),
