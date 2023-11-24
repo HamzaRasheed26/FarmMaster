@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'config.dart';
+import 'dart:io';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:path_provider/path_provider.dart';
+import 'package:open_file/open_file.dart';
 
 class ViewSellCrop {
   final String id;
@@ -64,6 +68,48 @@ class _SellCropViewPageState extends State<SellCropViewPage> {
     } catch (e) {
       throw Exception('Error fetching crops: $e');
     }
+  }
+
+  Future<void> generatePdf() async {
+    final pdf = pw.Document();
+
+    // Add content to the PDF
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) {
+          return pw.ListView.builder(
+            itemCount: sellCrops.length,
+            itemBuilder: (pw.Context context, int index) {
+              ViewSellCrop sellCrop = sellCrops[index];
+              return pw.Container(
+                margin: pw.EdgeInsets.all(10),
+                child: pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Text('Crop Type: ${sellCrop.cropType}'),
+                    pw.Text('Plant Date: ${sellCrop.plantDate.toString()}'),
+                    pw.Text('Quantity: ${sellCrop.Quantity.toString()}'),
+                    pw.Text('Price: ${sellCrop.price.toString()}'),
+                    pw.Text('Weather Condition: ${sellCrop.weatherCondition}'),
+                    pw.Text('Soil Type: ${sellCrop.soilType}'),
+                    pw.Divider(),
+                  ],
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+
+    // Save the PDF file
+    final output = await getTemporaryDirectory();
+    final pdfFile = File('${output.path}/sell_crops.pdf');
+    await pdfFile.writeAsBytes(await pdf.save());
+
+    // Open the PDF file
+    // You can use any PDF viewer installed on the device
+    OpenFile.open(pdfFile.path);
   }
 
   @override
@@ -142,6 +188,11 @@ class _SellCropViewPageState extends State<SellCropViewPage> {
             ),
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: generatePdf,
+        child: Icon(Icons.picture_as_pdf),
+        tooltip: 'Generate PDF',
       ),
     );
   }
