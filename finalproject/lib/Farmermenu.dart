@@ -2,7 +2,7 @@ import 'package:finalproject/welcome.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'cropManagement.dart';
-import 'welcome.dart';
+import 'Inventory.dart';
 import 'SellAtMarket.dart';
 import 'EmailSending.dart';
 void main() {
@@ -111,8 +111,10 @@ class FarmerMenu extends StatelessWidget {
               leading: Icon(Icons.inventory),
               title: Text('Inventory Tracking'),
               onTap: () {
-                // Handle Inventory Tracking
-                Navigator.pop(context); // Close drawer after selection
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => InventoryScreen()),
+                );// Close drawer after selection
               },
             ),
             SizedBox(height: 50),
