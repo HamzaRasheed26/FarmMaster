@@ -92,6 +92,7 @@ class _ContactPageState extends State<ContactPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Contact'),
+        backgroundColor: Colors.green,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -125,7 +126,10 @@ class _ContactPageState extends State<ContactPage> {
                 AddEmail();
                 SendEmail();
               },
-              child: Text('Send'),
+              child: Text('Send',style: TextStyle(color: Colors.white),),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green, // Set button color to white
+              ),
             ),
           ],
         ),

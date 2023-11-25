@@ -113,6 +113,7 @@ class EditUserScreenState extends State<EditUserScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Edit Users'),
+          backgroundColor: Colors.green,
         ),
         body: SingleChildScrollView(
             child: Column(
@@ -163,7 +164,10 @@ class EditUserScreenState extends State<EditUserScreen> {
                         });
                       }
                     },
-                    child: Text('Save Edited Data'),
+                    child: Text('Save',style: TextStyle(color: Colors.white),),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.green, // Set button color to white
+                    ),
                   ),
                 ])));
   }

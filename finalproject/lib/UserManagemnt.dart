@@ -125,6 +125,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
       return Scaffold(
           appBar: AppBar(
             title: Text('User Management'),
+            backgroundColor: Colors.green,
           ),
           body: SingleChildScrollView(
               child: Column(
@@ -175,14 +176,14 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                                           navigateToEditUserScreen(index);
                                         },
 
-                                        child: Text('Edit'),
+                                        child: Text('Edit',style: TextStyle(color: Colors.green),),
                                       ),
                                       ElevatedButton(
                                         onPressed: () {
                                           deleteUser(
                                               users[index].id.toString());
                                         },
-                                        child: Text('Delete'),
+                                        child: Text('Delete',style: TextStyle(color: Colors.green),),
                                       ),
                                     ],
                                   ),

@@ -206,6 +206,7 @@ class _SellCropScreenState extends State<SellCropScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Sell at Marketplace'),
+        backgroundColor: Colors.green,
       ),
       body: Column(
         children: [
@@ -248,7 +249,7 @@ class _SellCropScreenState extends State<SellCropScreen> {
                             onPressed: () {
                               AddCrop(crops[index].id.toString());
                             },
-                            child: Text('Add'),
+                            child: Text('Add',style: TextStyle(color: Colors.green),),
                           ),
                         ],
                       ),
@@ -262,7 +263,10 @@ class _SellCropScreenState extends State<SellCropScreen> {
                         MaterialPageRoute(builder: (context) => SellCropViewPage()),
                       );
                     },
-                    child: Text('View'),
+                    child: Text('View',style: TextStyle(color: Colors.white),),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.green, // Set button color to white
+                    ),
                   );
                 }
               },

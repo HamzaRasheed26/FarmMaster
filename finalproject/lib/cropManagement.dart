@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:velocity_x/velocity_x.dart';
 import 'config.dart';
 import 'dart:convert';
 
@@ -38,6 +39,7 @@ class Crop {
 class CropManagementScreen extends StatefulWidget {
   @override
   _CropManagementScreenState createState() => _CropManagementScreenState();
+
 }
 
 class _CropManagementScreenState extends State<CropManagementScreen> {
@@ -226,8 +228,9 @@ class _CropManagementScreenState extends State<CropManagementScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Crop Management'),
+          backgroundColor: Colors.green,
         ),
-        body: SingleChildScrollView(
+        body:SingleChildScrollView(
             child: Column(
                 children: [
             // Input fields
@@ -314,7 +317,7 @@ class _CropManagementScreenState extends State<CropManagementScreen> {
                  fetchCrops();
                 });
               },
-              child: Text('Add Data'),
+              child: Text('Add Data',style: TextStyle(color: Colors.green)),
             ),
             // Table to display crop data
                   SizedBox(
@@ -368,13 +371,13 @@ class _CropManagementScreenState extends State<CropManagementScreen> {
                                            _selectedSoilType=crops[index].soilType?.toString() ?? '';
                                         });
                                         },
-                                      child: Text('Edit'),
+                                      child: Text('Edit',style: TextStyle(color: Colors.green)),
                                     ),
                                     ElevatedButton(
                                       onPressed: () {
                                         deleteCrop(crops[index].id.toString());
                                       },
-                                      child: Text('Delete'),
+                                      child: Text('Delete',style: TextStyle(color: Colors.green)),
                                     ),
                                   ],
                                 ),
@@ -395,8 +398,11 @@ class _CropManagementScreenState extends State<CropManagementScreen> {
               });
             }
           },
-          child: Text('Save Edited Data'),
+          child: Text('Save',style: TextStyle(color: Colors.green)),
         ),
-        ])));
+        ]
+    )
+    )
+    );
   }
 }

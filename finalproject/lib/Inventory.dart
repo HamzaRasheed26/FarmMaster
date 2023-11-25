@@ -62,6 +62,7 @@ class InventoryScreenState extends State<InventoryScreen> {
     });
   }
 
+
   Future<void> fetchCrops() async {
     try {
       List<Inventory> fetchedCrops = await getCrops();
@@ -103,6 +104,7 @@ class InventoryScreenState extends State<InventoryScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Inventory Tracking'),
+        backgroundColor: Colors.green,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -113,6 +115,7 @@ class InventoryScreenState extends State<InventoryScreen> {
           controller: _searchController,
           decoration: InputDecoration(
             labelText: 'Search by Crop Type',
+            labelStyle: TextStyle(color:Colors.green),
             border: OutlineInputBorder(),
           ),
           onChanged: (value) {

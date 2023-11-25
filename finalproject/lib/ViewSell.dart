@@ -158,7 +158,8 @@ class _SellCropViewPageState extends State<SellCropViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sell Crop List'),
+        title: Text('Market Place'),
+        backgroundColor: Colors.green,
       ),
       body: ListView.builder(
         itemCount: sellCrops.length,
@@ -180,6 +181,7 @@ class _SellCropViewPageState extends State<SellCropViewPage> {
               ),
               trailing: IconButton(
                 icon: Icon(Icons.delete),
+                color: Colors.green,
                 onPressed: () {
                   print(sellCrop.id);
                   deleteCrop(sellCrop.id);

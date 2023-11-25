@@ -132,7 +132,7 @@ class FarmerMenu extends StatelessWidget {
             SizedBox(height: 50),
             ListTile(
               leading: Icon(Icons.chat),
-              title: Text('Communication with Advisors'),
+              title: Text('Communication'),
               onTap: () {
                 Navigator.push(
                   context,
