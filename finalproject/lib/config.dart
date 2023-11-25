@@ -1,4 +1,4 @@
-final url ='http://10.5.98.112:3700/';
+final url ='http://192.168.100.15:3700/';
 final registration = url+'registration';
 final login = url+'login';
 final addcrop=url+'crop/create';
@@ -13,3 +13,4 @@ final addemail = url+'email';
 final getusers=url+'users';
 final updateusers=url+'update/user/';
 final deleteusers=url+'delete/user/';
+final getAllemails=url+'api/emails';

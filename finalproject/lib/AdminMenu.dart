@@ -1,7 +1,7 @@
 import 'package:finalproject/welcome.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
-import 'cropManagement.dart';
+import 'Content.dart';
 import 'UserManagemnt.dart';
 import 'ViewSell.dart';
 import 'EmailSending.dart';
@@ -113,16 +113,17 @@ class AdminMenu extends StatelessWidget {
               leading: Icon(Icons.content_copy),
               title: Text('Content Management'),
               onTap: () {
-                // Handle Inventory Tracking
-                Navigator.pop(context); // Close drawer after selection
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ContentPage()),
+                );
               },
             ),
-            SizedBox(height: 50), // Adding space between options
+            SizedBox(height: 50),
             ListTile(
               leading: Icon(Icons.report),
               title: Text('Reporting'),
               onTap: () {
-                // Handle Weather & Forecasting
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Welcome()),
