@@ -1,10 +1,11 @@
-import 'package:finalproject/welcome.dart';
+import 'WeatherMain.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'cropManagement.dart';
 import 'Inventory.dart';
 import 'SellAtMarket.dart';
 import 'EmailSending.dart';
+
 void main() {
   runApp(MenuPage());
 }
@@ -125,7 +126,7 @@ class FarmerMenu extends StatelessWidget {
                 // Handle Weather & Forecasting
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Welcome()),
+                  MaterialPageRoute(builder: (context) => weatherApp()),
                 );
               },
             ),

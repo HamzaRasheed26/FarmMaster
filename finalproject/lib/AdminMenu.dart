@@ -1,4 +1,3 @@
-import 'package:finalproject/welcome.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'Content.dart';
@@ -116,17 +115,6 @@ class AdminMenu extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ContentPage()),
-                );
-              },
-            ),
-            SizedBox(height: 50),
-            ListTile(
-              leading: Icon(Icons.report),
-              title: Text('Reporting'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Welcome()),
                 );
               },
             ),
